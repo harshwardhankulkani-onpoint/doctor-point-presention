@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoctorPoint — White-Label & SDUI Interactive Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070f;
+  --bg2: #090c15;
+  --bg3: #0f1322;
+  --card: #0d111d;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.16);
+  --accent: #4f8ef7;
+  --accent-glow: rgba(79, 142, 247, 0.15);
+  --accent2: #7c5cfc;
+  --accent3: #00d4aa;
+  --accent4: #f97316;
+  --text: #e8eaf0;
+  --text2: #9aa3b8;
+  --text3: #4b5563;
+  --green: #10b981;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(5, 7, 15, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  border-color: var(--border-bright);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  background: #3b82f6;
+  transform: translateY(-1px);
+}
+
+/* Main Container Pages */
+.page {
+  padding-top: 60px;
+  min-height: 100vh;
+  display: none;
+  position: relative;
+}
+
+.page.active {
+  display: block;
+}
+
+/* PAGE 1: LANDING */
+.landing-hero {
+  max-width: 900px;
+  margin: 60px auto 30px;
+  text-align: center;
+  padding: 0 2rem;
+  z-index: 1;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(79, 142, 247, 0.1);
+  border: 1px solid rgba(79, 142, 247, 0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.landing-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -1.2px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.landing-hero h1 span {
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.landing-hero p {
+  color: var(--text2);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.landing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  padding: 0 2rem;
+}
+
+.choice-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.choice-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, var(--glow-color, rgba(79,142,247,0.12)), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.choice-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--hover-color, var(--accent));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 1px 1px var(--hover-color, var(--accent));
+}
+
+.choice-card:hover::before {
+  opacity: 1;
+}
+
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 24px;
+  transition: all 0.3s;
+}
+
+.choice-card:hover .card-icon {
+  background: var(--hover-color, var(--accent));
+  color: #fff;
+  border-color: transparent;
+  transform: scale(1.1) rotate(2deg);
+}
+
+.choice-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.choice-card p {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  flex-grow: 1;
+}
+
+.choice-card .cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--hover-color, var(--accent));
+  transition: all 0.2s;
+}
+
+.choice-card:hover .cta {
+  gap: 12px;
+}
+
+/* PAGE 2: WORKSPACE */
+.workspace-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+@media (max-width: 1180px) {
+  .workspace-container {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+  .mobile-sim-panel {
+    height: 720px !important;
+  }
+}
+
+/* LEFT WORKSPACE */
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  height: 100%;
+  background: var(--bg2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Distinct visual cues for active mode themes */
+.editor-panel.mode-whitelabel {
+  box-shadow: inset 4px 0 30px rgba(0, 212, 170, 0.03);
+  border-left: 3px solid var(--accent3);
+}
+
+.editor-panel.mode-sdui {
+  box-shadow: inset 4px 0 30px rgba(124, 92, 252, 0.03);
+  border-left: 3px solid var(--accent2);
+}
+
+.panel-header {
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.panel-title span {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.preset-switcher {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-preset {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-preset.active {
+  color: #fff;
+}
+
+.editor-panel.mode-whitelabel .btn-preset.active {
+  background: rgba(0, 212, 170, 0.15);
+  border-color: rgba(0, 212, 170, 0.4);
+}
+
+.editor-panel.mode-sdui .btn-preset.active {
+  background: rgba(124, 92, 252, 0.15);
+  border-color: rgba(124, 92, 252, 0.4);
+}
+
+.btn-preset:hover:not(.active) {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+}
+
+/* Core editor layout split */
+.editor-core-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+@media (max-width: 820px) {
+  .editor-core-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .tool-panel {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    max-height: 180px;
+  }
+}
+
+/* Tool Panel (Brand Controls or Component Palette) */
+.tool-panel {
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.tool-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text2);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Visual controls inside branding panel */
+.brand-control-group {
+  margin-bottom: 12px;
+}
+
+.brand-control-group label {
+  display: block;
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.brand-input-text {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #fff;
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.brand-input-text:focus {
+  border-color: var(--accent3);
+}
+
+.brand-picker-row {
+  display: flex;
+  gap: 8px;
+}
+
+.brand-color-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand-color-input {
+  -webkit-appearance: none;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+}
+
+.brand-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.brand-color-input::-webkit-color-swatch {
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+}
+
+.brand-feature-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 11.5px;
+  color: var(--text2);
+}
+
+.brand-feature-toggle input {
+  cursor: pointer;
+  accent-color: var(--accent3);
+}
+
+/* Widget palette logic inside tool panel */
+.widget-palette-btn {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.widget-palette-btn:hover {
+  border-color: var(--accent2);
+  background: rgba(124, 92, 252, 0.05);
+  transform: translateX(2px);
+}
+
+.widget-palette-icon {
+  font-size: 14px;
+}
+
+.widget-palette-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.widget-palette-desc {
+  font-size: 9px;
+  color: var(--text2);
+  margin-top: 1px;
+}
+
+/* RIGHT HAND SIDE: EDITOR INPUT */
+.editor-column {
+  display: grid;
+  grid-template-rows: 1fr 180px;
+  overflow: hidden;
+}
+
+.editor-wrapper {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.line-numbers {
+  width: 40px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  text-align: right;
+  padding: 16px 8px 16px 0;
+  user-select: none;
+  line-height: 20px;
+  overflow: hidden;
+}
+
+.json-textarea {
+  flex-grow: 1;
+  background: var(--bg2);
+  border: none;
+  outline: none;
+  color: #abb2bf;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 20px;
+  padding: 16px;
+  resize: none;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  tab-size: 2;
+}
+
+.editable-indicator {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 10px;
+  color: var(--text3);
+  background: rgba(0,0,0,0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  pointer-events: none;
+  z-index: 5;
+  border: 1px solid var(--border);
+  animation: pulseGradual 2s infinite ease-in-out;
+}
+
+@keyframes pulseGradual {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; color: var(--accent4); }
+}
+
+.quick-tokens {
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.token-btn {
+  background: rgba(11, 15, 25, 0.95);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  backdrop-filter: blur(4px);
+}
+
+.token-btn:hover {
+  background: var(--bg3);
+  border-color: var(--border-bright);
+}
+
+.editor-panel.mode-whitelabel .token-btn:hover {
+  color: var(--accent3);
+}
+
+.editor-panel.mode-sdui .token-btn:hover {
+  color: var(--accent2);
+}
+
+/* Diagnostics Output terminal */
+.diagnostics-panel {
+  background: #03050a;
+  border-top: 1px solid var(--border);
+  padding: 12px 1.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.diag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.diag-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+.diag-speed {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+}
+
+.editor-panel.mode-whitelabel .diag-speed { color: var(--accent3); }
+.editor-panel.mode-sdui .diag-speed { color: var(--accent2); }
+
+.diag-box {
+  background: #010205;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  flex-grow: 1;
+}
+
+.editor-panel.mode-whitelabel .diag-box {
+  border: 1px solid rgba(0, 212, 170, 0.15);
+  color: #a7f3d0;
+}
+
+.editor-panel.mode-sdui .diag-box {
+  border: 1px solid rgba(124, 92, 252, 0.15);
+  color: #c7d2fe;
+}
+
+.diag-box.error {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fda4af !important;
+}
+
+/* RIGHT COLUMN: SIMULATOR PANEL */
+.mobile-sim-panel {
+  background: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sim-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Phone Mockup styles */
+.phone-mock {
+  width: 320px;
+  height: 640px;
+  background: #000;
+  border-radius: 44px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8),
+              0 0 0 10px #1e293b,
+              0 0 0 12px #334155,
+              0 0 0 1px rgba(255,255,255,0.08);
+  position: relative;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.phone-mock.tablet {
+  width: 480px;
+  height: 640px;
+  border-radius: 32px;
+}
+
+.phone-screen {
+  flex-grow: 1;
+  background: #0f172a;
+  border-radius: 34px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  user-select: none;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid #111;
+}
+
+/* Notch/Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 24px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.dynamic-island::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #08081a;
+  border-radius: 50%;
+  position: absolute;
+  right: 12px;
+}
+
+/* Status Bar */
+.status-bar {
+  height: 38px;
+  padding: 14px 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  z-index: 40;
+  position: relative;
+}
+
+.status-icons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.sim-app {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+  z-index: 50;
+}
+
+/* Floating custom tooltips for ruler overlay on hover */
+.ruler-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  display: none;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  opacity: 0.12;
+}
+
+.ruler-overlay.active {
+  display: grid;
+}
+
+.ruler-cell {
+  border-right: 1px dashed red;
+  border-bottom: 1px dashed red;
+}
+
+/* Interactive Inspector hover badge inside Phone */
+.inspector-badge {
+  position: absolute;
+  top: 44px;
+  left: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(124, 92, 252, 0.4);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent2);
+  pointer-events: none;
+  z-index: 80;
+  display: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  animation: fadeInFast 0.15s;
+}
+
+@keyframes fadeInFast {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Rendered Cards inside phone */
+.phone-app-bar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.phone-app-bar-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.phone-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* WHITE-LABEL MOCKUP APP RENDERS */
+.wl-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.wl-brand-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--wl-primary, var(--accent3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.wl-card-calories {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--wl-radius, 12px);
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.wl-circle-progress {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #0f172a 79%, transparent 80% 100%),
+              conic-gradient(var(--wl-primary, var(--accent3)) 72%, rgba(255,255,255,0.04) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.wl-card-glucose {
+  background: rgba(239, 68, 68, 0.03);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  border-radius: var(--wl-radius, 12px);
+  padding: 14px;
+  transition: all 0.3s ease;
+}
+
+.wl-sparkline {
+  height: 28px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.wl-spark-bar {
+  flex-grow: 1;
+  background: var(--wl-primary, var(--accent3));
+  border-radius: 1px;
+}
+
+.wl-card-thyroid {
+  background: rgba(245, 158, 11, 0.03);
+  border: 1px solid rgba(245, 158, 11, 0.12);
+  border-radius: var(--wl-radius, 12px);
+  padding: 14px;
+  transition: all 0.3s ease;
+}
+
+.wl-badge-pill {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-top: 8px;
+}
+
+.wl-doctor-chat-floating {
+  position: absolute;
+  bottom: 30px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--wl-primary, var(--accent3)), var(--wl-accent, var(--accent2)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  cursor: pointer;
+  z-index: 45;
+  transition: all 0.2s;
+  animation: floatBounce 3s infinite ease-in-out;
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* SDUI WIREFRAME APP RENDERS */
+.sdui-wireframe-node {
+  border: 1px dashed rgba(124, 92, 252, 0.2);
+  border-radius: 6px;
+  margin-bottom: 4px;
+  position: relative;
+  transition: all 0.15s;
+}
+
+.sdui-wireframe-node:hover {
+  border-color: var(--accent2);
+  background: rgba(124, 92, 252, 0.03);
+}
+
+.sdui-wireframe-tag {
+  position: absolute;
+  top: -6px;
+  right: 6px;
+  background: var(--accent2);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  padding: 0 3px;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+.sdui-wireframe-node:hover > .sdui-wireframe-tag {
+  opacity: 0.9;
+}
+
+/* Simulated SDUI Custom Components */
+.sdui-water-card {
+  background: rgba(79, 142, 247, 0.03);
+  border: 1px solid rgba(79, 142, 247, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sdui-med-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sdui-carousel-wrap {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.sdui-carousel-item {
+  flex: 0 0 140px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.action-log-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent3);
+  overflow-y: auto;
+  z-index: 48;
+}
+
+.action-log-line {
+  margin-bottom: 2px;
+}
+
+.toast-msg {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  opacity: 0;
+  background: rgba(16, 185, 129, 0.95);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 200;
+  transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  pointer-events: none;
+}
+
+.toast-msg.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#" onclick="goHome()">
+    <span>⬡</span> DoctorPoint Sandbox
+  </a>
+  <div class="header-actions">
+    <a class="btn-secondary" href="doctorpoint_presentation.html">
+      ← Back to presentation
+    </a>
+    <button class="btn-primary" onclick="goHome()" id="nav-landing-btn" style="display:none;">
+      Sandbox Home
+    </button>
+  </div>
+</header>
+
+<!-- TOAST -->
+<div class="toast-msg" id="global-toast">Preset Applied Successfully!</div>
+
+<!-- ==================== PAGE 1: LANDING PAGE ==================== -->
+<div class="page active" id="page-landing">
+  <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle at 50% 30%, rgba(79, 142, 247, 0.08) 0%, transparent 60%); pointer-events:none;"></div>
+  
+  <div class="landing-hero">
+    <div class="hero-tag">🌟 Architecture Playground</div>
+    <h1>Live Interactive<br><span>Branding & Layout Simulator</span></h1>
+    <p>Choose an architecture model below. Play with distinct presets, edit live code configurations, and watch immediate results on the simulator.</p>
+  </div>
+
+  <div class="landing-cards">
+    <!-- Card 1: White Label -->
+    <div class="choice-card" style="--hover-color: var(--accent3); --glow-color: rgba(0, 212, 170, 0.15);" onclick="launchSandbox('whitelabel')">
+      <div>
+        <div class="card-icon">🎭</div>
+        <h3>White-Label Simulator</h3>
+        <p>Witness how a single configuration file drives app-wide branding. Rebrand color tokens, feature gates, custom card designs, and dynamic typography across Weight Loss, Diabetic, and Thyroid programs with active sliders and variables.</p>
+      </div>
+      <div class="cta" style="color:var(--accent3);">Launch Simulator &rarr;</div>
+    </div>
+
+    <!-- Card 2: SDUI -->
+    <div class="choice-card" style="--hover-color: var(--accent2); --glow-color: rgba(124, 92, 252, 0.15);" onclick="launchSandbox('sdui')">
+      <div>
+        <div class="card-icon">⚡</div>
+        <h3>SDUI Engine Sandbox</h3>
+        <p>Modify layout widget nodes. Edit Stac JSON layouts directly, use drag-click component inserters (.rw / .rsp units, medications, hydration modules), and hover over live simulator widgets to inspect dynamic nodes.</p>
+      </div>
+      <div class="cta" style="color:var(--accent2)">Launch Engine Sandbox &rarr;</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: WORKSPACE PAGE ==================== -->
+<div class="page" id="page-workspace">
+  <div class="workspace-container">
+    
+    <!-- LEFT PANEL: CUSTOM DUAL EDITOR -->
+    <div class="editor-panel" id="editor-panel-box">
+      <!-- Panel Header -->
+      <div class="panel-header">
+        <div class="panel-title">
+          <span id="workspace-mode-badge">WHITE LABEL</span>
+          <div style="font-size:12px; font-weight:500;" id="workspace-sub-title">Configuration Workspace</div>
+        </div>
+        
+        <div class="preset-switcher" id="preset-switcher-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Core Split: Sidebar Tool Panel & Main Code area -->
+      <div class="editor-core-layout">
+        
+        <!-- TOOL SIDEBAR -->
+        <div class="tool-panel" id="side-tool-panel">
+          <!-- Populated by JS based on Active Mode -->
+        </div>
+
+        <!-- RIGHT HAND SPLIT: JSON Code Area + Live Diagnostics Output -->
+        <div class="editor-column">
+          <div class="editor-wrapper">
+            <div class="editable-indicator">✍️ Fully Editable JSON</div>
+            <div class="line-numbers" id="line-numbers-container">
+              <!-- Populated by JS -->
+            </div>
+            <textarea class="json-textarea" id="json-input" spellcheck="false" placeholder="Type JSON code here..."></textarea>
+            
+            <!-- Quick Token Assist Actions -->
+            <div class="quick-tokens" id="quick-tokens-container">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Pipeline Diagnostics Box -->
+          <div class="diagnostics-panel">
+            <div class="diag-header">
+              <div class="diag-title">Pipeline Auditor & Diagnostic Report</div>
+              <div class="diag-speed" id="diag-telemetry-speed">Processing: 0ms</div>
+            </div>
+            <div class="diag-box" id="diagnostic-audit-box">
+              <!-- ASCII block rendered here -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: MOBILE PHONE EMULATOR -->
+    <div class="mobile-sim-panel">
+      <!-- Simulator Header Toolbar -->
+      <div class="sim-controls">
+        <button class="btn-preset active" onclick="setDevice('phone')" id="device-btn-phone">iPhone 15 Pro</button>
+        <button class="btn-preset" onclick="setDevice('tablet')" id="device-btn-tablet">iPad Mini</button>
+        <button class="btn-preset" onclick="toggleRuler()" id="ruler-btn" style="border-color: rgba(239,68,68,0.25); color: #fda4af;">Ruler Overlay: OFF</button>
+      </div>
+
+      <!-- The Simulated Phone Frame -->
+      <div class="phone-mock" id="phone-frame">
+        <div class="phone-screen" id="phone-screen-container">
+          <!-- Dynamic Island/Notch -->
+          <div class="dynamic-island"></div>
+          
+          <!-- Hover inspector bubble (used in SDUI) -->
+          <div class="inspector-badge" id="inspector-overlay-bubble">Hover Component</div>
+          
+          <!-- Status Bar -->
+          <div class="status-bar">
+            <span id="phone-time">09:41 AM</span>
+            <div class="status-icons">
+              <span>📶</span>
+              <span>🔋</span>
+            </div>
+          </div>
+
+          <!-- Live Rendered Sandbox Content App -->
+          <div class="sim-app" id="sim-app-viewport">
+            <!-- Rendered Widgets/Brand UI here -->
+          </div>
+
+          <!-- Toast Action Logs overlay inside screen -->
+          <div class="action-log-panel" id="action-log-container">
+            <div class="action-log-line" style="color: #64748b;">[System] Simulation ready. Log actions...</div>
+          </div>
+
+          <!-- Home swipe bar -->
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Preset JSON content blocks
+const PRESETS = {
+  whitelabel: {
+    title: "White-Label Brand Simulator",
+    badge: "WHITE LABEL CONFIG",
+    badgeColor: "var(--accent3)",
+    presets: [
+      {
+        id: "weight_loss",
+        name: "SlimPoint (Weight Loss)",
+        json: {
+          "programId": "weight_loss",
+          "brandName": "SlimPoint",
+          "theme": {
+            "primaryColor": "#4f8ef7",
+            "accentColor": "#7c5cfc",
+            "borderRadius": 12,
+            "fontFamily": "Outfit"
+          },
+          "features": {
+            "calorieTracker": true,
+            "insulinLogging": false,
+            "thyroidSymptoms": false,
+            "chatWithDoctor": true,
+            "communitySupport": true
+          },
+          "strings": {
+            "welcomeHeader": "Welcome to SlimPoint",
+            "welcomeSub": "Your guided clinical weight loss program.",
+            "todayGoalText": "Daily Calorie Target Met"
+          }
+        }
+      },
+      {
+        id: "diabetic_care",
+        name: "GlucoPoint (Diabetes)",
+        json: {
+          "programId": "diabetic_care",
+          "brandName": "GlucoPoint",
+          "theme": {
+            "primaryColor": "#ef4444",
+            "accentColor": "#00d4aa",
+            "borderRadius": 16,
+            "fontFamily": "Inter"
+          },
+          "features": {
+            "calorieTracker": false,
+            "insulinLogging": true,
+            "thyroidSymptoms": false,
+            "chatWithDoctor": true,
+            "communitySupport": false
+          },
+          "strings": {
+            "welcomeHeader": "GlucoPoint Health",
+            "welcomeSub": "Advanced glycemic control & support.",
+            "todayGoalText": "Glucose Logs Synchronized"
+          }
+        }
+      },
+      {
+        id: "thyroid_support",
+        name: "ThyroPoint (Thyroid)",
+        json: {
+          "programId": "thyroid_support",
+          "brandName": "ThyroPoint",
+          "theme": {
+            "primaryColor": "#f59e0b",
+            "accentColor": "#10b981",
+            "borderRadius": 6,
+            "fontFamily": "Space Grotesk"
+          },
+          "features": {
+            "calorieTracker": false,
+            "insulinLogging": false,
+            "thyroidSymptoms": true,
+            "chatWithDoctor": false,
+            "communitySupport": true
+          },
+          "strings": {
+            "welcomeHeader": "ThyroPoint Center",
+            "welcomeSub": "Optimize your thyroid health & hormones.",
+            "todayGoalText": "Thyroid Checklist Complete"
+          }
+        }
+      }
+    ],
+    tokens: ["\"theme\"", "\"primaryColor\"", "\"features\"", "true", "false", "\"chatWithDoctor\""]
+  },
+  sdui: {
+    title: "SDUI Layout Engine Sandbox",
+    badge: "SDUI ENGINE SCHEMA",
+    badgeColor: "var(--accent2)",
+    presets: [
+      {
+        id: "home_dashboard",
+        name: "Dashboard Layout",
+        json: {
+          "type": "scaffold",
+          "appBar": {
+            "title": "$tr:dashboard.title",
+            "backgroundColor": "$color:primary"
+          },
+          "body": {
+            "type": "column",
+            "padding": "16.rw",
+            "children": [
+              {
+                "type": "container",
+                "padding": "14.rw",
+                "borderRadius": 12,
+                "backgroundColor": "rgba(255,255,255,0.03)",
+                "border": "1.rw",
+                "borderColor": "$color:primary",
+                "child": {
+                  "type": "text",
+                  "data": "Hello and welcome to your dynamic dashboard!",
+                  "fontSize": "14.rsp",
+                  "color": "#fff"
+                }
+              },
+              {
+                "type": "today_water_card",
+                "liters": 2.2,
+                "target": 3.0
+              },
+              {
+                "type": "medication_card",
+                "title": "Metformin - 500mg",
+                "time": "With breakfast (8:00 AM)",
+                "completed": false
+              },
+              {
+                "type": "button",
+                "text": "Initiate Medical Consult",
+                "action": {
+                  "type": "navigate",
+                  "route": "/consultation"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        id: "medication_checklist",
+        name: "Trackers & Carousel",
+        json: {
+          "type": "scaffold",
+          "appBar": {
+            "title": "$tr:trackers.title",
+            "backgroundColor": "$color:primary"
+          },
+          "body": {
+            "type": "column",
+            "padding": "14.rw",
+            "children": [
+              {
+                "type": "text",
+                "data": "Featured Clinical Tips",
+                "fontSize": "15.rsp",
+                "color": "$color:primary"
+              },
+              {
+                "type": "stac_carousel",
+                "items": [
+                  {
+                    "title": "Importance of Fiber",
+                    "desc": "Soluble fibers slow gastric emptying and increase satiety."
+                  },
+                  {
+                    "title": "Metformin Timing",
+                    "desc": "Taking Metformin with meals minimizes gastrointestinal side effects."
+                  }
+                ]
+              },
+              {
+                "type": "medication_card",
+                "title": "Atorvastatin - 10mg",
+                "time": "Before bed (10:00 PM)",
+                "completed": true
+              },
+              {
+                "type": "button",
+                "text": "Trigger Telemetry API",
+                "action": {
+                  "type": "api_call",
+                  "endpoint": "/patients/telemetry/report"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    tokens: ["\"type\"", "\"scaffold\"", "\"children\"", "\"$color:primary\"", "\"$tr:dashboard.title\"", "\"16.rw\"", "\"14.rsp\""]
+  }
+};
+
+let activeMode = 'whitelabel'; 
+let activePresetIndex = 0;
+let isRulerActive = false;
+
+// Caching HTML elements
+const pageLanding = document.getElementById('page-landing');
+const pageWorkspace = document.getElementById('page-workspace');
+const navLandingBtn = document.getElementById('nav-landing-btn');
+const jsonInput = document.getElementById('json-input');
+const lineNumbersContainer = document.getElementById('line-numbers-container');
+const diagSpeed = document.getElementById('diag-telemetry-speed');
+const diagnosticAuditBox = document.getElementById('diagnostic-audit-box');
+const simAppViewport = document.getElementById('sim-app-viewport');
+const actionLogContainer = document.getElementById('action-log-container');
+const phoneFrame = document.getElementById('phone-frame');
+const workspaceModeBadge = document.getElementById('workspace-mode-badge');
+const workspaceSubTitle = document.getElementById('workspace-sub-title');
+const globalToast = document.getElementById('global-toast');
+const sideToolPanel = document.getElementById('side-tool-panel');
+const editorPanelBox = document.getElementById('editor-panel-box');
+const inspectorOverlayBubble = document.getElementById('inspector-overlay-bubble');
+
+// Status Bar clock update
+function updateTime() {
+  const now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  document.getElementById('phone-time').textContent = hours + ':' + minutes + ' ' + ampm;
+}
+setInterval(updateTime, 60000);
+updateTime();
+
+// Page Switcher Navigation
+function launchSandbox(mode) {
+  activeMode = mode;
+  activePresetIndex = 0;
+  
+  pageLanding.classList.remove('active');
+  pageWorkspace.classList.add('active');
+  navLandingBtn.style.display = 'inline-flex';
+  
+  // Set headers
+  const modeInfo = PRESETS[mode];
+  workspaceModeBadge.textContent = modeInfo.badge;
+  workspaceModeBadge.style.backgroundColor = modeInfo.badgeColor;
+  workspaceSubTitle.textContent = modeInfo.title;
+  
+  // Style editor box specifically
+  editorPanelBox.className = `editor-panel mode-${mode}`;
+  
+  // Build Preset Swaps
+  buildPresetButtons();
+  // Build Quick Tokens
+  buildQuickTokens();
+  // Load JSON
+  loadPreset(0);
+}
+
+function goHome() {
+  pageWorkspace.classList.remove('active');
+  pageLanding.classList.add('active');
+  navLandingBtn.style.display = 'none';
+}
+
+function buildPresetButtons() {
+  const container = document.getElementById('preset-switcher-container');
+  container.innerHTML = '';
+  
+  const presets = PRESETS[activeMode].presets;
+  presets.forEach((preset, index) => {
+    const btn = document.createElement('button');
+    btn.className = `btn-preset ${index === activePresetIndex ? 'active' : ''}`;
+    btn.textContent = preset.name;
+    btn.onclick = () => {
+      const btns = container.querySelectorAll('.btn-preset');
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadPreset(index);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function buildQuickTokens() {
+  const container = document.getElementById('quick-tokens-container');
+  container.innerHTML = '';
+  
+  const tokens = PRESETS[activeMode].tokens;
+  tokens.forEach(token => {
+    const btn = document.createElement('button');
+    btn.className = 'token-btn';
+    btn.textContent = token.replace(/"/g, '');
+    btn.onclick = () => insertToken(token);
+    container.appendChild(btn);
+  });
+}
+
+function insertToken(token) {
+  const start = jsonInput.selectionStart;
+  const end = jsonInput.selectionEnd;
+  const val = jsonInput.value;
+  jsonInput.value = val.substring(0, start) + token + val.substring(end);
+  jsonInput.focus();
+  jsonInput.selectionStart = jsonInput.selectionEnd = start + token.length;
+  processAndCompileJSON();
+}
+
+function loadPreset(index) {
+  activePresetIndex = index;
+  const preset = PRESETS[activeMode].presets[index];
+  jsonInput.value = JSON.stringify(preset.json, null, 2);
+  showToast(`Loaded preset: ${preset.name}`);
+  processAndCompileJSON();
+}
+
+function showToast(msg) {
+  globalToast.textContent = msg;
+  globalToast.classList.add('show');
+  setTimeout(() => {
+    globalToast.classList.remove('show');
+  }, 2200);
+}
+
+// Device Switchers
+function setDevice(type) {
+  const phoneBtn = document.getElementById('device-btn-phone');
+  const tabletBtn = document.getElementById('device-btn-tablet');
+  
+  if (type === 'phone') {
+    phoneFrame.classList.remove('tablet');
+    phoneBtn.classList.add('active');
+    tabletBtn.classList.remove('active');
+  } else {
+    phoneFrame.classList.add('tablet');
+    tabletBtn.classList.add('active');
+    phoneBtn.classList.remove('active');
+  }
+  
+  logAction("System", `Swapped viewport size to ${type === 'phone' ? 'iPhone 15 Pro (320px)' : 'iPad Mini (480px)'}`);
+  processAndCompileJSON();
+}
+
+function toggleRuler() {
+  const btn = document.getElementById('ruler-btn');
+  isRulerActive = !isRulerActive;
+  
+  if (isRulerActive) {
+    btn.classList.add('active');
+    btn.textContent = "Ruler Overlay: ON";
+    btn.style.borderColor = "var(--green)";
+    btn.style.color = "#a7f3d0";
+    simAppViewport.classList.add('ruler-active');
+  } else {
+    btn.classList.remove('active');
+    btn.textContent = "Ruler Overlay: OFF";
+    btn.style.borderColor = "rgba(239,68,68,0.25)";
+    btn.style.color = "#fda4af";
+    simAppViewport.classList.remove('ruler-active');
+  }
+}
+
+// In-app actions logs
+function logAction(type, msg) {
+  const line = document.createElement('div');
+  line.className = 'action-log-line';
+  
+  const now = new Date();
+  const timeStr = now.toTimeString().split(' ')[0];
+  
+  line.innerHTML = `<span style="color:#64748b;">[${timeStr}]</span> <span style="color:${type === 'Action' ? 'var(--accent2)' : 'var(--accent3)'}">[${type}]</span> ${msg}`;
+  actionLogContainer.appendChild(line);
+  actionLogContainer.scrollTop = actionLogContainer.scrollHeight;
+}
+
+// Line numbering sync
+function updateLineNumbers() {
+  const val = jsonInput.value;
+  const lines = val.split('\n').length;
+  let numbersHtml = '';
+  for (let i = 1; i <= lines; i++) {
+    numbersHtml += `${i}<br>`;
+  }
+  lineNumbersContainer.innerHTML = numbersHtml;
+}
+
+// Trigger parsing on edits
+jsonInput.addEventListener('input', () => {
+  updateLineNumbers();
+  processAndCompileJSON();
+});
+
+// JSON compilations & Auditor warnings scanner
+function processAndCompileJSON() {
+  updateLineNumbers();
+  const startTelemetry = performance.now();
+  
+  const rawText = jsonInput.value;
+  let parsedJson = null;
+  
+  // 1️⃣ Stage 1: Load and JSON Parse Check
+  try {
+    parsedJson = JSON.parse(rawText);
+  } catch (e) {
+    const endTelemetry = performance.now();
+    const parseTime = (endTelemetry - startTelemetry).toFixed(1);
+    
+    diagSpeed.textContent = `Processing Failed: ${parseTime}ms`;
+    
+    diagnosticAuditBox.classList.add('error');
+    diagnosticAuditBox.textContent = 
+`┌────────────────────────────────────────────────────────┐
+│ ❌ DOCTORPOINT SDUI PIPELINE CRITICAL ERROR             │
+├────────────────────────────────────────────────────────┤
+│ Status: Parser Broken                                  │
+│ Performance: Load: Failed                              │
+├────────────────────────────────────────────────────────┤
+│ ⚠️  SYNTAX ERROR:                                       │
+│ ${e.message}                                          │
+│                                                        │
+│ Tip: Review commas, bracket matches, and double quotes │
+└────────────────────────────────────────────────────────┘`;
+    return;
+  }
+  
+  diagnosticAuditBox.classList.remove('error');
+  
+  // Calculate dynamic telemetry process speeds
+  const loadTime = Math.random() * 1.5 + 0.4;
+  const localizeTime = Math.random() * 0.8 + 0.2;
+  const scaleTime = Math.random() * 1.2 + 0.3;
+  const themeTime = Math.random() * 1.0 + 0.2;
+  const totalTime = (loadTime + localizeTime + scaleTime + themeTime).toFixed(1);
+  
+  diagSpeed.textContent = `Speed: ${totalTime}ms`;
+  
+  // Scan tokens for warning box
+  let unresolvedTokens = [];
+  
+  function scan(obj, path) {
+    if (obj === null || obj === undefined) return;
+    
+    if (typeof obj === 'string') {
+      if (obj.startsWith('$tr:') && obj.length < 5) {
+        unresolvedTokens.push({ type: 'Translation', path, val: obj, desc: 'Empty token binding' });
+      } else if (obj.startsWith('$tr:') && obj.endsWith('.')) {
+        unresolvedTokens.push({ type: 'Translation', path, val: obj, desc: 'Incomplete string node' });
+      }
+      
+      if (obj.startsWith('$color:') && !['$color:primary', '$color:accent'].includes(obj)) {
+        unresolvedTokens.push({ type: 'Theme Color', path, val: obj, desc: `Unmapped override variable` });
+      }
+      
+      if (path.includes('padding') || path.includes('fontSize') || path.includes('width') || path.includes('height')) {
+        if (!isNaN(obj)) {
+          unresolvedTokens.push({ type: 'Responsive Unit', path, val: obj, desc: `Missing dynamic sizing suffix (.rw/.rh/.rsp)` });
+        }
+      }
+    } else if (Array.isArray(obj)) {
+      obj.forEach((item, idx) => scan(item, `${path}[${idx}]`));
+    } else if (typeof obj === 'object') {
+      for (let key in obj) {
+        scan(obj[key], `${path}/${key}`);
+      }
+    }
+  }
+  
+  scan(parsedJson, 'root');
+  
+  let warningCount = unresolvedTokens.length;
+  let auditLogs = '';
+  
+  if (warningCount > 0) {
+    auditLogs += `├────────────────────────────────────────────────────────┤\n`;
+    auditLogs += `│ ⚠️  WARNING: Found ${warningCount} unresolved token(s)!              │\n`;
+    auditLogs += `├────────────────────────────────────────────────────────┤\n`;
+    unresolvedTokens.forEach(t => {
+      const paddedLine = ` • [${t.type}] at "${t.path}": "${t.val}" (${t.desc})`;
+      auditLogs += `│ ${paddedLine.padEnd(54)} │\n`;
+    });
+  } else {
+    auditLogs += `├────────────────────────────────────────────────────────┤\n`;
+    auditLogs += `│ ✅ PIPELINE CONSOLE CLEAN: No issues found.            │\n`;
+    auditLogs += `│ Active Bindings: 35 widgets registered                  │\n`;
+  }
+  
+  const presetName = PRESETS[activeMode].presets[activePresetIndex].name;
+  
+  diagnosticAuditBox.textContent = 
+`┌────────────────────────────────────────────────────────┐
+│ 🚀 DOCTORPOINT SDUI PIPELINE AUDIT REPORT              │
+├────────────────────────────────────────────────────────┤
+│ Screen: ${presetName.padEnd(46)} │
+│ Performance: Load: ${loadTime.toFixed(1)}ms | Localize: ${localizeTime.toFixed(1)}ms | Scale: ${scaleTime.toFixed(1)}ms │
+│ Total Processing Time: ${totalTime} ms                           │
+${auditLogs}└────────────────────────────────────────────────────────┘`;
+
+  // Render Sidebar Tools (Sliders or Palette)
+  renderSidebarTools(parsedJson);
+
+  // Render on Mobile Emulator!
+  renderMobileScreen(parsedJson);
+}
+
+// Sidebar visual control binders (Updating JSON as sliders/toggles are edited)
+function renderSidebarTools(json) {
+  sideToolPanel.innerHTML = '';
+  
+  if (activeMode === 'whitelabel') {
+    // 🎭 RENDER SIDEBAR 1: WHITE-LABEL CONFIG CONTROLS
+    const title = document.createElement('div');
+    title.className = 'tool-panel-title';
+    title.textContent = 'Brand Design Settings';
+    sideToolPanel.appendChild(title);
+    
+    // Brand name input
+    const brandGroup = document.createElement('div');
+    brandGroup.className = 'brand-control-group';
+    brandGroup.innerHTML = `
+      <label>App / Program Name</label>
+      <input type="text" class="brand-input-text" id="ctrl-brand-name" value="${json.brandName || ''}">
+    `;
+    sideToolPanel.appendChild(brandGroup);
+    
+    // Color pickers
+    const colors = json.theme || {};
+    const colorGroup = document.createElement('div');
+    colorGroup.className = 'brand-control-group';
+    colorGroup.innerHTML = `
+      <label>Brand Accent Hues</label>
+      <div class="brand-picker-row">
+        <div class="brand-color-box">
+          <input type="color" class="brand-color-input" id="ctrl-primary-color" value="${colors.primaryColor || '#4f8ef7'}">
+          <span style="font-size:10px; color:var(--text2)">Primary</span>
+        </div>
+        <div class="brand-color-box">
+          <input type="color" class="brand-color-input" id="ctrl-accent-color" value="${colors.accentColor || '#7c5cfc'}">
+          <span style="font-size:10px; color:var(--text2)">Accent</span>
+        </div>
+      </div>
+    `;
+    sideToolPanel.appendChild(colorGroup);
+    
+    // Border Radius range slider
+    const radiusGroup = document.createElement('div');
+    radiusGroup.className = 'brand-control-group';
+    radiusGroup.innerHTML = `
+      <label>Corner Radius: <span id="ctrl-radius-label" style="color:var(--accent3); font-weight:600;">${colors.borderRadius || 12}px</span></label>
+      <input type="range" min="0" max="24" step="2" id="ctrl-radius-slider" style="width:100%; cursor:pointer; accent-color:var(--accent3);" value="${colors.borderRadius || 12}">
+    `;
+    sideToolPanel.appendChild(radiusGroup);
+    
+    // Font Picker selector
+    const fontGroup = document.createElement('div');
+    fontGroup.className = 'brand-control-group';
+    fontGroup.innerHTML = `
+      <label>Branded Typography Font</label>
+      <select class="brand-input-text" id="ctrl-font" style="cursor:pointer;">
+        <option value="Outfit" ${colors.fontFamily === 'Outfit' ? 'selected' : ''}>Outfit (Clinical Premium)</option>
+        <option value="Inter" ${colors.fontFamily === 'Inter' ? 'selected' : ''}>Inter (Functional Clean)</option>
+        <option value="Space Grotesk" ${colors.fontFamily === 'Space Grotesk' ? 'selected' : ''}>Space Grotesk (Modern Tech)</option>
+      </select>
+    `;
+    sideToolPanel.appendChild(fontGroup);
+    
+    // Feature toggles header
+    const toggleTitle = document.createElement('div');
+    toggleTitle.className = 'tool-panel-title';
+    toggleTitle.style.marginTop = '14px';
+    toggleTitle.textContent = 'Enabled Feature Modules';
+    sideToolPanel.appendChild(toggleTitle);
+    
+    // Feature checkboxes
+    const feat = json.features || {};
+    const featuresList = [
+      { id: 'calorieTracker', name: 'Calorie Tracker Ring' },
+      { id: 'insulinLogging', name: 'Glucose Insulin Sparks' },
+      { id: 'thyroidSymptoms', name: 'Thyroid Symptoms Checklist' },
+      { id: 'chatWithDoctor', name: '👩‍⚕️ Float Physician Chat' },
+      { id: 'communitySupport', name: '💬 Live Groups Peer Forum' }
+    ];
+    
+    featuresList.forEach(f => {
+      const toggle = document.createElement('div');
+      toggle.className = 'brand-feature-toggle';
+      toggle.innerHTML = `
+        <span>${f.name}</span>
+        <input type="checkbox" class="ctrl-feature-chk" data-feature="${f.id}" ${feat[f.id] ? 'checked' : ''}>
+      `;
+      sideToolPanel.appendChild(toggle);
+    });
+    
+    // Attach change binders to visual controls to update JSON directly!
+    bindWhiteLabelControls();
+    
+  } else {
+    // ⚡ RENDER SIDEBAR 2: SDUI COMPONENT LIBRARY WIDGET PALETTE
+    const title = document.createElement('div');
+    title.className = 'tool-panel-title';
+    title.textContent = 'SDUI Widget Palette';
+    sideToolPanel.appendChild(title);
+    
+    const intro = document.createElement('p');
+    intro.style.fontSize = '10px';
+    intro.style.color = 'var(--text2)';
+    intro.style.lineHeight = '1.4';
+    intro.style.marginBottom = '14px';
+    intro.textContent = 'Click any element below to inject it directly into the JSON code editor at your cursor position!';
+    sideToolPanel.appendChild(intro);
+    
+    const widgets = [
+      {
+        name: 'Text Block',
+        icon: '📝',
+        desc: 'Render typography with dynamic scaling (.rsp)',
+        code: `{\n  "type": "text",\n  "data": "New Dynamic Alert Text",\n  "fontSize": "14.rsp",\n  "color": "$color:primary"\n}`
+      },
+      {
+        name: 'Water Tracker Card',
+        icon: '💧',
+        desc: 'Simulated hydration progress ring',
+        code: `{\n  "type": "today_water_card",\n  "liters": 1.5,\n  "target": 3.0\n}`
+      },
+      {
+        name: 'Medication Task Card',
+        icon: '💊',
+        desc: 'Checklist task logger',
+        code: `{\n  "type": "medication_card",\n  "title": "New Medication Capsule",\n  "time": "Every Morning (9:00 AM)",\n  "completed": false\n}`
+      },
+      {
+        name: 'Action Button',
+        icon: '⚡',
+        desc: 'Navigation / REST API dispatcher',
+        code: `{\n  "type": "button",\n  "text": "Call Clinical Api",\n  "action": {\n    "type": "api_call",\n    "endpoint": "/patients/telemetry"\n  }\n}`
+      },
+      {
+        name: 'Carousel Slider',
+        icon: '🎠',
+        desc: 'Swipeable horizontal card stack',
+        code: `{\n  "type": "stac_carousel",\n  "items": [\n    {\n      "title": "Tips 1",\n      "desc": "Hydrate hourly."\n    },\n    {\n      "title": "Tips 2",\n      "desc": "Walk after meals."\n    }\n  ]\n}`
+      }
+    ];
+    
+    widgets.forEach(w => {
+      const btn = document.createElement('div');
+      btn.className = 'widget-palette-btn';
+      btn.innerHTML = `
+        <div class="widget-palette-icon">${w.icon}</div>
+        <div>
+          <div class="widget-palette-name">${w.name}</div>
+          <div class="widget-palette-desc">${w.desc}</div>
+        </div>
+      `;
+      btn.onclick = () => injectWidgetBlock(w.code, w.name);
+      sideToolPanel.appendChild(btn);
+    });
+  }
+}
+
+// Binders for Whitelabel control updates
+function bindWhiteLabelControls() {
+  const brandName = document.getElementById('ctrl-brand-name');
+  const primColor = document.getElementById('ctrl-primary-color');
+  const accColor = document.getElementById('ctrl-accent-color');
+  const slider = document.getElementById('ctrl-radius-slider');
+  const radiusLabel = document.getElementById('ctrl-radius-label');
+  const ctrlFont = document.getElementById('ctrl-font');
+  const featureChks = document.querySelectorAll('.ctrl-feature-chk');
+  
+  function updateFromUI() {
+    try {
+      const currentJson = JSON.parse(jsonInput.value);
+      
+      currentJson.brandName = brandName.value;
+      if (!currentJson.theme) currentJson.theme = {};
+      currentJson.theme.primaryColor = primColor.value;
+      currentJson.theme.accentColor = accColor.value;
+      currentJson.theme.borderRadius = parseInt(slider.value);
+      currentJson.theme.fontFamily = ctrlFont.value;
+      
+      if (!currentJson.features) currentJson.features = {};
+      featureChks.forEach(chk => {
+        const featId = chk.getAttribute('data-feature');
+        currentJson.features[featId] = chk.checked;
+      });
+      
+      // Write back to text editor! (Keeps sync)
+      const cursor = jsonInput.selectionStart;
+      jsonInput.value = JSON.stringify(currentJson, null, 2);
+      jsonInput.selectionStart = jsonInput.selectionEnd = cursor;
+      updateLineNumbers();
+      
+      // Update phone simulator screen
+      renderMobileScreen(currentJson);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
+  brandName.oninput = updateFromUI;
+  primColor.onchange = updateFromUI;
+  accColor.onchange = updateFromUI;
+  ctrlFont.onchange = updateFromUI;
+  
+  slider.oninput = () => {
+    radiusLabel.textContent = `${slider.value}px`;
+    updateFromUI();
+  };
+  
+  featureChks.forEach(chk => {
+    chk.onchange = updateFromUI;
+  });
+}
+
+// Widget injector logic inside text area editor
+function injectWidgetBlock(snippet, widgetName) {
+  const cursor = jsonInput.selectionStart;
+  const val = jsonInput.value;
+  
+  // Clean indentation
+  const indented = snippet.split('\n').join('\n  ');
+  
+  jsonInput.value = val.substring(0, cursor) + indented + val.substring(cursor);
+  jsonInput.focus();
+  jsonInput.selectionStart = jsonInput.selectionEnd = cursor + indented.length;
+  
+  showToast(`Injected ${widgetName}!`);
+  processAndCompileJSON();
+}
+
+// Render mobile viewport wrapper
+function renderMobileScreen(json) {
+  simAppViewport.innerHTML = '';
+  
+  if (activeMode === 'whitelabel') {
+    renderWhiteLabelApp(json);
+  } else {
+    renderSduiApp(json);
+  }
+}
+
+// 🎭 RENDER ENGINE 1: PATIENT DASHBOARD HOMEPAGE
+function renderWhiteLabelApp(json) {
+  const brand = json.brandName || "App";
+  const theme = json.theme || {};
+  const primaryColor = theme.primaryColor || "var(--accent)";
+  const accentColor = theme.accentColor || "var(--accent2)";
+  const radius = (theme.borderRadius !== undefined) ? `${theme.borderRadius}px` : '12px';
+  const font = theme.fontFamily || "sans-serif";
+  const features = json.features || {};
+  const strings = json.strings || {};
+  
+  phoneFrame.style.setProperty('--wl-primary', primaryColor);
+  phoneFrame.style.setProperty('--wl-accent', accentColor);
+  phoneFrame.style.setProperty('--wl-radius', radius);
+  simAppViewport.style.fontFamily = `'${font}', sans-serif`;
+  
+  // App Bar
+  const appBar = document.createElement('div');
+  appBar.className = 'phone-app-bar';
+  appBar.style.backgroundColor = primaryColor;
+  appBar.innerHTML = `
+    <div class="wl-brand-header">
+      <div class="wl-brand-logo" style="background:#fff; color:${primaryColor}">${brand.charAt(0) || 'P'}</div>
+      <div class="phone-app-bar-title" style="color: #fff;">${brand}</div>
+    </div>
+    <div style="font-size: 13px; color: #fff;">🔔</div>
+  `;
+  simAppViewport.appendChild(appBar);
+  
+  // Main Body
+  const body = document.createElement('div');
+  body.className = 'phone-body';
+  simAppViewport.appendChild(body);
+  
+  // Program Welcome Callout Box
+  const welcome = document.createElement('div');
+  welcome.style.margin = '4px 0';
+  welcome.innerHTML = `
+    <h4 style="font-size: 17px; font-weight: 700; color: #fff;">${strings.welcomeHeader || "Welcome"}</h4>
+    <p style="font-size: 11.5px; color: var(--text2); margin-top: 2px; line-height:1.4;">${strings.welcomeSub || ""}</p>
+  `;
+  body.appendChild(welcome);
+  
+  // Checklist verification summary
+  const goalBadge = document.createElement('div');
+  goalBadge.style.background = 'rgba(255,255,255,0.04)';
+  goalBadge.style.border = '1px solid rgba(255,255,255,0.06)';
+  goalBadge.style.borderRadius = radius;
+  goalBadge.style.padding = '8px 12px';
+  goalBadge.style.fontSize = '10.5px';
+  goalBadge.style.display = 'flex';
+  goalBadge.style.alignItems = 'center';
+  goalBadge.style.gap = '6px';
+  goalBadge.innerHTML = `<span style="color: var(--accent3); font-weight:bold;">✔</span> <span>${strings.todayGoalText || "Synced to Active Program"}</span>`;
+  body.appendChild(goalBadge);
+  
+  // Feature layout modules
+  if (features.calorieTracker) {
+    const card = document.createElement('div');
+    card.className = 'wl-card-calories';
+    card.style.borderRadius = radius;
+    card.innerHTML = `
+      <div>
+        <div style="font-size: 10px; color: var(--text2); text-transform:uppercase; letter-spacing:0.5px;">Nutrition Log</div>
+        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-top:4px;">1,420 kcal</div>
+        <div style="font-size: 8.5px; color: var(--green); margin-top:2px;">Calories remaining: 380</div>
+      </div>
+      <div class="wl-circle-progress">78%</div>
+    `;
+    body.appendChild(card);
+  }
+  
+  if (features.insulinLogging) {
+    const card = document.createElement('div');
+    card.className = 'wl-card-glucose';
+    card.style.borderRadius = radius;
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:10px; color:#fda4af; text-transform:uppercase; letter-spacing:0.5px;">Insulin Logs</div>
+        <span style="font-size:8px; background:rgba(239, 68, 68, 0.2); padding:1px 5px; border-radius:3px; color:#fca5a5; font-weight:600;">ACTIVE</span>
+      </div>
+      <div style="font-size: 15px; font-weight: 700; color:#fff; margin-top:4px;">142 mg/dL <span style="font-size:10px; font-weight:normal; color:#fda4af;">(Normal)</span></div>
+      <div class="wl-sparkline">
+        <div class="wl-spark-bar" style="height: 12px;"></div>
+        <div class="wl-spark-bar" style="height: 18px;"></div>
+        <div class="wl-spark-bar" style="height: 22px;"></div>
+        <div class="wl-spark-bar" style="height: 15px;"></div>
+        <div class="wl-spark-bar" style="height: 28px;"></div>
+      </div>
+    `;
+    body.appendChild(card);
+  }
+  
+  if (features.thyroidSymptoms) {
+    const card = document.createElement('div');
+    card.className = 'wl-card-thyroid';
+    card.style.borderRadius = radius;
+    card.innerHTML = `
+      <div style="font-size: 10px; color: #fde047; text-transform:uppercase; letter-spacing:0.5px;">Symptom Logs</div>
+      <div style="font-size: 13px; font-weight: 600; color: #fff; margin-top:4px;">Fatigue & Sensitivity Check</div>
+      <div class="wl-badge-pill">Requires Daily Log</div>
+    `;
+    body.appendChild(card);
+  }
+  
+  if (features.communitySupport) {
+    const forum = document.createElement('div');
+    forum.style.background = 'rgba(255,255,255,0.03)';
+    forum.style.padding = '12px';
+    forum.style.borderRadius = radius;
+    forum.style.border = '1px dashed rgba(255,255,255,0.08)';
+    forum.innerHTML = `
+      <div style="font-size: 9px; color: ${primaryColor}; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;">💬 Program Forum Groups</div>
+      <div style="font-size: 11.5px; margin-top:4px; font-weight:500;">Connect with peers in your clinical cohorts</div>
+    `;
+    body.appendChild(forum);
+  }
+  
+  if (features.chatWithDoctor) {
+    const floating = document.createElement('div');
+    floating.className = 'wl-doctor-chat-floating';
+    floating.innerHTML = '👩‍⚕️';
+    floating.onclick = () => {
+      logAction("Action", "Launched Secure HIPAA Messenger with Clinical Coach");
+      showToast("HIPAA Messenger Opened");
+    };
+    simAppViewport.appendChild(floating);
+  }
+}
+
+// ⚡ RENDER ENGINE 2: SDUI DYNAMIC WIREFRAME
+function renderSduiApp(json) {
+  phoneFrame.style.setProperty('--wl-primary', 'var(--accent)');
+  phoneFrame.style.setProperty('--wl-accent', 'var(--accent2)');
+  phoneFrame.style.setProperty('--wl-radius', '12px');
+  simAppViewport.style.fontFamily = "'Inter', sans-serif";
+  
+  if (json.type !== 'scaffold') {
+    const errorMsg = document.createElement('div');
+    errorMsg.style.padding = '30px 20px';
+    errorMsg.style.textAlign = 'center';
+    errorMsg.innerHTML = `
+      <div style="font-size:24px; margin-bottom:8px;">⚠️</div>
+      <div style="font-size:11px; color:var(--red); font-family:'JetBrains Mono';">Render Error: Root widget type must be "scaffold"</div>
+    `;
+    simAppViewport.appendChild(errorMsg);
+    return;
+  }
+  
+  // App Bar
+  if (json.appBar) {
+    const titleVal = json.appBar.title || "Screen";
+    const resolvedTitle = titleVal.startsWith('$tr:') ? 'Dashboard Blueprint' : titleVal;
+    const bgVal = json.appBar.backgroundColor || '$color:primary';
+    const bgResolved = bgVal === '$color:primary' ? 'var(--accent2)' : bgVal;
+    
+    const appBar = document.createElement('div');
+    appBar.className = 'phone-app-bar';
+    appBar.style.backgroundColor = bgResolved;
+    appBar.innerHTML = `
+      <div class="phone-app-bar-title" style="color:#fff;">${resolvedTitle}</div>
+      <div style="font-size:12px; color:#fff;">⚙️</div>
+    `;
+    simAppViewport.appendChild(appBar);
+  }
+  
+  // Body Column
+  if (json.body) {
+    const bodyConfig = json.body;
+    const bodyContainer = document.createElement('div');
+    bodyContainer.className = 'phone-body';
+    
+    // Translate padding responsive scale
+    if (bodyConfig.padding) {
+      if (bodyConfig.padding.endsWith('.rw')) {
+        bodyContainer.style.padding = `${parseInt(bodyConfig.padding)}px`;
+        bodyContainer.setAttribute('data-rw', bodyConfig.padding);
+      } else {
+        bodyContainer.style.padding = bodyConfig.padding;
+      }
+    }
+    
+    simAppViewport.appendChild(bodyContainer);
+    
+    // Renders Child widgets recursively inside wireframe nodes
+    if (bodyConfig.children && Array.isArray(bodyConfig.children)) {
+      bodyConfig.children.forEach(child => {
+        const node = compileSduiNodeWireframe(child);
+        if (node) bodyContainer.appendChild(node);
+      });
+    } else if (bodyConfig.child) {
+      const node = compileSduiNodeWireframe(bodyConfig.child);
+      if (node) bodyContainer.appendChild(node);
+    }
+  }
+}
+
+// Special custom widget inspector builder for SDUI mode!
+function compileSduiNodeWireframe(node) {
+  if (!node || typeof node !== 'object') return null;
+  
+  // Create wrap element with hover inspector capabilities
+  const wrapNode = document.createElement('div');
+  wrapNode.className = 'sdui-wireframe-node';
+  
+  const tag = document.createElement('div');
+  tag.className = 'sdui-wireframe-tag';
+  tag.textContent = node.type;
+  wrapNode.appendChild(tag);
+  
+  // Bind hover actions to populate inspection overlays
+  wrapNode.onmouseenter = (e) => {
+    e.stopPropagation();
+    inspectorOverlayBubble.style.display = 'block';
+    inspectorOverlayBubble.textContent = `Widget Type: ${node.type} | JSON Node`;
+  };
+  wrapNode.onmouseleave = (e) => {
+    e.stopPropagation();
+    inspectorOverlayBubble.style.display = 'none';
+  };
+  
+  let inner = null;
+  
+  switch (node.type) {
+    case 'container': {
+      inner = document.createElement('div');
+      inner.style.background = node.backgroundColor || 'rgba(255,255,255,0.02)';
+      inner.style.width = '100%';
+      
+      if (node.borderRadius) inner.style.borderRadius = `${node.borderRadius}px`;
+      if (node.border) {
+        const size = node.border.endsWith('.rw') ? `${parseInt(node.border)}px` : node.border;
+        const color = node.borderColor === '$color:primary' ? 'var(--accent2)' : (node.borderColor || 'rgba(255,255,255,0.1)');
+        inner.style.border = `${size} solid ${color}`;
+      }
+      if (node.padding) {
+        inner.style.padding = node.padding.endsWith('.rw') ? `${parseInt(node.padding)}px` : node.padding;
+      }
+      
+      if (node.child) {
+        const sub = compileSduiNodeWireframe(node.child);
+        if (sub) inner.appendChild(sub);
+      }
+      break;
+    }
+    
+    case 'text': {
+      inner = document.createElement('p');
+      inner.textContent = node.data || '';
+      inner.style.color = node.color === '$color:primary' ? 'var(--accent2)' : (node.color || '#fff');
+      
+      if (node.fontSize) {
+        inner.style.fontSize = node.fontSize.endsWith('.rsp') ? `${parseInt(node.fontSize)}px` : node.fontSize;
+      } else {
+        inner.style.fontSize = '12px';
+      }
+      inner.style.fontWeight = '500';
+      inner.style.padding = '4px 0';
+      break;
+    }
+    
+    case 'today_water_card': {
+      inner = document.createElement('div');
+      inner.className = 'sdui-water-card';
+      
+      let liters = node.liters || 0.0;
+      let target = node.target || 3.0;
+      
+      inner.innerHTML = `
+        <div>
+          <div style="font-size:8.5px; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px;">💧 Hydration SDUI Card</div>
+          <div style="font-size:14px; font-weight:700; color:#fff; margin-top:2px;" class="liters-lbl">${liters.toFixed(1)} / ${target.toFixed(1)} L</div>
+        </div>
+      `;
+      
+      const btn = document.createElement('button');
+      btn.style.width = '26px';
+      btn.style.height = '26px';
+      btn.style.borderRadius = '50%';
+      btn.style.border = 'none';
+      btn.style.background = 'rgba(124,92,252,0.15)';
+      btn.style.color = 'var(--accent2)';
+      btn.style.fontWeight = '700';
+      btn.style.cursor = 'pointer';
+      btn.textContent = '+';
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        liters += 0.25;
+        if (liters > target) liters = target;
+        inner.querySelector('.liters-lbl').textContent = `${liters.toFixed(2)} / ${target.toFixed(1)} L`;
+        logAction("State", `Hydration optimistically incremented inside SDUI template`);
+      };
+      
+      inner.appendChild(btn);
+      break;
+    }
+    
+    case 'medication_card': {
+      inner = document.createElement('div');
+      inner.className = 'sdui-med-card';
+      
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.checked = node.completed || false;
+      chk.style.accentColor = 'var(--accent2)';
+      
+      const desc = document.createElement('div');
+      desc.innerHTML = `
+        <div style="font-size:12px; font-weight:600; color:#fff;">${node.title || "Medication"}</div>
+        <div style="font-size:8.5px; color:var(--text2); margin-top:2px;">${node.time || ""}</div>
+      `;
+      
+      chk.onchange = (e) => {
+        e.stopPropagation();
+        logAction("State", `Medication [${node.title}] check updated`);
+        showToast("State synched!");
+      };
+      
+      inner.appendChild(chk);
+      inner.appendChild(desc);
+      break;
+    }
+    
+    case 'button': {
+      inner = document.createElement('button');
+      inner.className = 'btn-primary';
+      inner.style.width = '100%';
+      inner.style.padding = '8px';
+      inner.style.fontSize = '12px';
+      inner.style.background = 'var(--accent2)';
+      inner.style.boxShadow = 'none';
+      inner.textContent = node.text || "Click Action";
+      
+      if (node.action) {
+        inner.onclick = (e) => {
+          e.stopPropagation();
+          if (node.action.type === 'navigate') {
+            logAction("Action", `Router Trigger: Navigate to ${node.action.route}`);
+            showToast(`Navigated to ${node.action.route}`);
+          } else if (node.action.type === 'api_call') {
+            logAction("Action", `REST API Mutual Request: POST ${node.action.endpoint}`);
+            showToast(`API call dispatched!`);
+          }
+        };
+      }
+      break;
+    }
+    
+    case 'stac_carousel': {
+      inner = document.createElement('div');
+      inner.className = 'sdui-carousel-wrap';
+      
+      if (node.items && Array.isArray(node.items)) {
+        node.items.forEach(it => {
+          const item = document.createElement('div');
+          item.className = 'sdui-carousel-item';
+          item.innerHTML = `
+            <div style="font-size:9.5px; font-weight:600; color:var(--accent2);">${it.title}</div>
+            <div style="font-size:8px; color:var(--text2); margin-top:2px; line-height:1.3;">${it.desc}</div>
+          `;
+          inner.appendChild(item);
+        });
+      }
+      break;
+    }
+    
+    case 'column': {
+      inner = document.createElement('div');
+      inner.style.display = 'flex';
+      inner.style.flexDirection = 'column';
+      inner.style.gap = '8px';
+      
+      if (node.children && Array.isArray(node.children)) {
+        node.children.forEach(c => {
+          const s = compileSduiNodeWireframe(c);
+          if (s) inner.appendChild(s);
+        });
+      }
+      break;
+    }
+  }
+  
+  if (inner) {
+    wrapNode.appendChild(inner);
+    return wrapNode;
+  }
+  return null;
+}
+
+// Global initialization
+launchSandbox('whitelabel');
+</script>
+</body>
+</html>
